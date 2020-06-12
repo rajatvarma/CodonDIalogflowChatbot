@@ -1,0 +1,112 @@
+{% load static %}
+<html>
+  <head>
+    <title>Django Dialogflow</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}"/>
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="page-header text-center">
+        <h1>Dialogflow</h1>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-6 col-xs-offset-3">
+          <ul class="list-group js-chat-log">
+          </ul>
+
+          <div class="input-group input-group-lg">
+            <span class="input-group-btn">   
+              <button class="btn btn-primary js-say">Submit</button>
+            </span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script>
+      var $chatlog = $('.js-chat-log');
+      var $input = $('.js-text');
+      var formData = new FormData(this);
+
+      var $sayButton = $('.js-say');
+      var dialogflowUrl = '{% url "home" %}';
+      var csrftoken = Cookies.get('csrftoken');
+
+      function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+      }
+
+      $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+        }
+      });
+
+      function createRow(text) {
+        var $row = $('<li class="list-group-item"></li>');
+        var list = '<li class="list-group-item">'
+         var k = text.split("\n")
+
+         for(i=0;i<k.length;i++) {
+             list += k[i]+"<br />"
+         }
+
+        list = list + "</li>"
+        $row.text(list);
+        $chatlog.append(list);
+        $chatlog.append(text);
+      }
+
+      function submitInput() {
+        var inputData = {
+          'text': $input.val()
+          
+        }
+        // Display the user's input on the web page
+        createRow(inputData.text);
+        var dialogflowChatUrl = '{% url "chat" %}';
+        var $submit = $.ajax({
+          type: 'POST',
+          url: dialogflowChatUrl,
+          data: JSON.stringify(inputData),
+          contentType: 'application/json',
+        });
+
+
+
+        $submit.done(function(statement) {
+            //createRow(statement.text);
+            createRow(statement);
+            console.log("this is", statement)
+            // Clear the input field
+            $input.val('');
+        });
+
+        $submit.fail(function() {
+          // TODO: Handle errors
+        });
+      }
+
+      $sayButton.click(function() {
+        submitInput();
+      });
+
+      $input.keydown(function(event) {
+        // Submit the input when the enter button is pressed
+        if (event.keyCode == 13) {
+          submitInput();
+        }
+      });
+    </script>
+  </body>
+</html>

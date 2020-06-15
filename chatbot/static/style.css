@@ -61,7 +61,7 @@ p.user-msg{
 
 .input-area{
   justify-content: flex-end;
-  margin: 10px;
+  margin: 5px;
 }
 
 input#userMsg{
@@ -77,7 +77,7 @@ input#userMsg{
 .btn{
   border:none;
   outline: none;
-  color: #4da6ff;
+  color: #4df6ff;
   font-size: 38px;
   transform: translateY(7px);
   margin: 5px;

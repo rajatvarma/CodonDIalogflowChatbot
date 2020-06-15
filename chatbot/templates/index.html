@@ -1,46 +1,143 @@
 {% load static %}
 <html>
   <head>
-    <title>Django Dialogflow</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}"/>
-    <link rel="stylesheet" href="{% static 'css/custom.css' %}"/>
+    <title>ezPOZ Support</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
   </head>
-  <body>
+  <body onload="submitInput(1)">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500;800&display=swap');
+
+        body {
+            font-family: "Raleway";
+        }
+
+        .container {
+            width: 30%;
+            text-align: center;
+            margin: 5% auto;
+            border: 2px solid black;
+            padding: 2%;
+            height: 80%;
+        }
+
+        .heading {
+            text-align: center;
+        }
+
+        #chat-log {
+            text-align: center;
+            height: 50%;
+            border-radius: 5px;
+            border: 2px solid #3FD2C7;
+            overflow-y: scroll;
+            padding: 2%;
+        }
+
+        .message-container {
+          display: block;
+          width: 100%;
+        }
+
+        .message-container .message-bot {
+            padding: 10px;
+            margin: 0;
+            background-color: #00458B;
+            display: block;
+            color: #fff;
+            text-align: left;
+            border-radius: 15px;
+            left: 0;
+            width: 60%;
+        }
+
+        .message-container .message-usr {
+            display: inline-block;
+            padding: 2.5%;
+            background-color: #99DDFF;
+            border-radius: 15px;
+            text-align: right;
+            right: 0;
+            width: 45%;
+            margin: 0 0 0 50%;
+        }
+
+        .input-container {
+            margin-top: 5%;
+            padding: 10px;
+        }
+
+        .input-container input {
+          border-width: 0 0 2px 0;
+        }
+
+        .input-container .submit {
+            padding: 10px;
+            background-color: #3FD2C7;
+            border: none;
+            border-radius: 5px;
+        }
+
+        @media only screen and (max-width: 1000px) {
+          body {
+            font-size: 1.5rem;
+          }
+
+          .container {
+            margin-top: 30%;
+            width: 70%;
+            height: 50%;
+          }
+
+          .input-container input {
+            font-size: 1.25rem;
+            width: 60%;
+            height: 5%; 
+            margin-right: 20px;
+          }
+
+          .input-container .submit {
+            font-size: 1.5rem;
+          }
+        }
+    </style>
+    <!--<div class="container">
+        <div class="heading">
+            <h1>ezPoz Support Chatbot</h1>
+        </div>
+        <div id="chat-log">
+        </div>
+
+        <div class="input-container">
+        <input type="text" class="query">
+            <button class="submit">Submit</button>
+        </span>
+        </div>
+    </div>-->
 
     <div class="container">
-      <div class="page-header text-center">
-        <h1>Dialogflow</h1>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-6 col-xs-offset-3">
-          <ul class="list-group js-chat-log">
-          </ul>
-
-          <div class="input-group input-group-lg">
-            <span class="input-group-btn">   
-              <button class="btn btn-primary js-say">Submit</button>
-            </span>
-          </div>
-
+      <h1 class="main-heading">Chat Bot</h1>
+      <div class="chat-box">
+        <div class="chat-container">
         </div>
+  
+      </div>
+      <div class="input-area">
+        <input type="text" id="userMsg" placeholder="Enter your text here.">
+        <button class="btn"><i class="fas fa-arrow-alt-circle-right"></i></button>
       </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script>
-      var $chatlog = $('.js-chat-log');
-      var $input = $('.js-text');
-      var formData = new FormData(this);
+      var $chatlog = $('.chat-container');
+      var $input = $('#userMsg');
 
-      var $sayButton = $('.js-say');
-      var dialogflowUrl = '{% url "home" %}';
+      var $sayButton = $('.submit');
       var csrftoken = Cookies.get('csrftoken');
 
       function csrfSafeMethod(method) {
-        // these HTTP methods do not require CSRF protection
         return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
       }
 
@@ -51,60 +148,58 @@
           }
         }
       });
-
-      function createRow(text) {
-        var $row = $('<li class="list-group-item"></li>');
-        var list = '<li class="list-group-item">'
-         var k = text.split("\n")
-
-         for(i=0;i<k.length;i++) {
-             list += k[i]+"<br />"
-         }
-
-        list = list + "</li>"
-        $row.text(list);
-        $chatlog.append(list);
-        $chatlog.append(text);
-      }
-
-      function submitInput() {
-        var inputData = {
-          'text': $input.val()
-          
+      function createRow(text, sender) {
+        if (sender == 0) {
+            var list = '<p class="bot-msg">'
+            var k = text;
+            list += k
+            list = list + "</p></div><br>"
         }
-        // Display the user's input on the web page
-        createRow(inputData.text);
-        var dialogflowChatUrl = '{% url "chat" %}';
-        var $submit = $.ajax({
-          type: 'POST',
-          url: dialogflowChatUrl,
-          data: JSON.stringify(inputData),
-          contentType: 'application/json',
-        });
 
-
-
-        $submit.done(function(statement) {
-            //createRow(statement.text);
-            createRow(statement);
-            console.log("this is", statement)
-            // Clear the input field
-            $input.val('');
-        });
-
-        $submit.fail(function() {
-          // TODO: Handle errors
-        });
+        if (sender == 1) {
+            var list = '<p class="user-msg">'
+            var k = text;
+            list += k
+            list = list + "</p></div><br>"
+        }
+        $chatlog.append(list);
       }
+
+      function submitInput(i) {
+        if (i==1){
+          var inputData = {
+            'text': 'hello'
+          }
+        }
+        else {
+          var inputData = {
+            'text': $input.val()
+          }
+          createRow(inputData.text, 1);
+        }
+          
+          var dialogflowChatUrl = '{% url "chat" %}';
+          var $submit = $.ajax({
+            type: 'POST',
+            url: dialogflowChatUrl,
+            data: JSON.stringify(inputData),
+            contentType: 'application/json',
+          });
+
+          $submit.done(function(statement) {
+              createRow(statement, 0);
+              $input.val('');
+            });
+          }
+        
 
       $sayButton.click(function() {
-        submitInput();
+        submitInput(0);
       });
 
       $input.keydown(function(event) {
-        // Submit the input when the enter button is pressed
         if (event.keyCode == 13) {
-          submitInput();
+          submitInput(0);
         }
       });
     </script>

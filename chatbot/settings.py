@@ -25,12 +25,13 @@ SECRET_KEY = '3x8trt7403#s^di&)=0+0y_=jl!9&ft(idsvadq(k4=$2_h4y5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ezpoz-chatbot.herokuapp.com']
+ALLOWED_HOSTS = ['ezpoz-chatbot.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'chatbot.apps.appNameConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

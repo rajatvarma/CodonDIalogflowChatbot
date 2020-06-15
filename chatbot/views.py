@@ -1,6 +1,7 @@
 from .forms import NameForm
 from .df import detect_intent_texts
 import json
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
@@ -9,7 +10,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 sn_id = 'ezPoz'
 pr_id = 'newagent-nkwbgv'
 
-
+@xframe_options_exempt
 @require_http_methods(['GET'])
 def index_view(request):
     form = NameForm()
@@ -25,6 +26,7 @@ def convert(data):
 
     return data
 
+@xframe_options_exempt
 @csrf_exempt
 @require_http_methods(['POST'])
 def bot(request):

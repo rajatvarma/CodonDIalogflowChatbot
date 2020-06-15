@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{% static 'style.css' %}">
   </head>
   <body onload="submitInput(1)">
-    <style>
+    <!--<style>
         @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500;800&display=swap');
 
         body {
@@ -101,7 +101,7 @@
           }
         }
     </style>
-    <!--<div class="container">
+    <div class="container">
         <div class="heading">
             <h1>ezPoz Support Chatbot</h1>
         </div>
@@ -163,6 +163,9 @@
             list = list + "</p></div><br>"
         }
         $chatlog.append(list);
+        var objDiv = $(".chat-container");
+    	  var h = objDiv.get(0).scrollHeight;
+    	  objDiv.animate({scrollTop: h});
       }
 
       function submitInput(i) {

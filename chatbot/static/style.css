@@ -28,6 +28,8 @@
 .chat-container{
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  max-height: 70%;
 }
 
 .chat-container p{
@@ -35,6 +37,7 @@
 }
 
 p.bot-msg{
+  text-align: left;
   align-self: flex-start;
   background: #4da6ff;
   padding: 10px 15px;
@@ -58,6 +61,7 @@ p.user-msg{
 
 .input-area{
   justify-content: flex-end;
+  margin: 10px;
 }
 
 input#userMsg{

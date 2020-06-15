@@ -1,2 +1,2 @@
 .DS_Store
-chatbot\__pycache__\
+*.pyc

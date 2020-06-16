@@ -16,9 +16,9 @@
 }
 
 .container{
-  max-width:440px;
+  max-width:30%;
   margin: auto;
-  padding:20px 40px;
+  padding: 0px 40px;
 }
 
 .main-heading{
@@ -68,13 +68,13 @@ p.user-msg{
 
 /* input area */
 
-.input-area{
+.input-area {
   justify-content: flex-end;
-  margin: 5px;
+  margin: 0;
 }
 
-input#userMsg{
-  width:85%;
+input#userMsg {
+  width:80%;
   border:1px solid #4da6ff;
   border-radius: 15px;
   padding: 12px 10px;
@@ -222,7 +222,7 @@ input#userMsg{
       var $chatlog = $('.chat-container');
       var $input = $('#userMsg');
 
-      var $sayButton = $('.submit');
+      var $sayButton = $('.btn');
       var csrftoken = Cookies.get('csrftoken');
 
       function csrfSafeMethod(method) {

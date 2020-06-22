@@ -20,6 +20,7 @@ def create_intent(project_id, display_name, training_phrases_parts,
         training_phrases=training_phrases,
         messages=[message])
     response = intents_client.create_intent(parent, intent)
+    return response
 
 
 def delete_intent(project_id, intent_id):
@@ -31,13 +32,35 @@ def delete_intent(project_id, intent_id):
 def upload_intents(f, project_id):
     intent_questions = guide.questions_reader(f)
     intent_answers = guide.answers_reader(f) 
+    print(len(intent_questions))
+    print(len(intent_answers))
     count = 0
     for k in range(len(intent_questions)):
         parts = intent_questions[k].split(" ")
-        answer = ['%.300s' % intent_answers[k]]
-        try:
-            intents.create_intent(project_id, intent_questions[k], parts, answer)
-            count += 1
+        try: 
+            answer = ['%.300s' % intent_answers[k]]
+            '''try:
+                create_intent(project_id, intent_questions[k], parts, answer)
+                count += 1
+            except:
+                print("fail")
+                continue'''
+            create_intent(project_id, intent_questions[k], parts, answer)
+                count += 1
         except:
-            continue
-    return counts
+            break
+    return count
+
+working_dir = os.getcwd()
+print(working_dir)
+credential_path = working_dir + "\\key\\NewAgent-2fa78f8c2306.json"
+print(credential_path)
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
+pr_id = 'newagent-nkwbgv'
+guides_list = guide.get_guides(os.listdir("docs"))
+print(guides_list)
+for f in guides_list:
+    print(f)
+    f = "docs/"+f
+    print(upload_intents(f, pr_id))
+    print("done")

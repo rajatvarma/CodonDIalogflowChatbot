@@ -1,10 +1,11 @@
 import csv
+import os
 
 def get_guides(path):
     filenames = []
     for file in path:
-    if file.endswith(".csv"):
-        filenames.append(file)
+        if file.endswith(".csv"):
+            filenames.append(file)
     return filenames
 
 def questions_reader(f):
@@ -13,7 +14,7 @@ def questions_reader(f):
         questions = []
         for row in reader:
             try:
-                int(row[0])
+                int(row[0][0])
                 questions.append(row[1])
             except:
                 continue
@@ -25,6 +26,6 @@ def answers_reader(f):
         reader = csv.reader(csvfile)
         answers = []
         for row in reader:
-            if row[0] == "Ans." or row[0] == "Ans":
+            if row[0].upper() == "ANS." or row[0].upper() == "ANS":
                 answers.append(row[1])
     return answers

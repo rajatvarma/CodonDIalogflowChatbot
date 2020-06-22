@@ -3,205 +3,102 @@
   <head>
     <title>LIMS</title>
     <link type="text/css" rel="stylesheet" href="{% static '/style.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Exo+2" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet"> 
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
   </head>
   <body onload="submitInput(1)">
     <style>
       *{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  background: #f4f4f4;
-}
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background: #f4f4f4;
+      }
 
-.container{
-  max-width: 440px;
-  margin: auto;
-  padding: 0px 20px;
-}
+      body {
+        font-family: "Noto Sans", sans-serif;
+      }
 
-.main-heading{
-  text-align: center;
-  color: #818181;
-  margin-bottom: 5px;
-}
+      .container{
+        max-width: 440px;
+        margin: auto;
+        padding: 0px 20px;
+      }
 
-.chat-box{
-  border: 1px solid #ccc;
-  border-radius: 15px;
-  padding: 5px 15px;
-  height: 355px;
-}
+      .main-heading{
+        font-family: "Exo 2", sans-serif;
+        text-align: center;
+        color: #818181;
+        margin-bottom: 5px;
+      }
 
-.chat-container{
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  max-height: 100%;
-}
+      .chat-box{
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        padding: 5px 15px;
+        height: 355px;
+      }
 
-.chat-container p{
-  letter-spacing: 1px;
-}
+      .chat-container{
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        max-height: 100%;
+      }
 
-p.bot-msg{
-  text-align: left;
-  align-self: flex-start;
-  background: #4da6ff;
-  padding: 10px 15px;
-  margin: 5px 0px;
-  border-radius: 10px;
-  max-width: 70%;
-  color: #fff;
-}
+      .chat-container p{
+        letter-spacing: 1px;
+      }
 
-p.user-msg{
-  align-self: flex-end;
-  padding: 10px 15px;
-  margin: 5px 0px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  max-width: 70%;
-  color: rgba(58, 57, 57, 0.904);
-}
+      p.bot-msg{
+        text-align: left;
+        align-self: flex-start;
+        background: #4da6ff;
+        padding: 10px 15px;
+        margin: 5px 0px;
+        border-radius: 10px;
+        max-width: 70%;
+        color: #fff;
+      }
 
-/* input area */
+      p.user-msg{
+        align-self: flex-end;
+        padding: 10px 15px;
+        margin: 5px 0px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        max-width: 70%;
+        color: rgba(58, 57, 57, 0.904);
+      }
 
-.input-area {
-  justify-content: flex-end;
-  margin: 0;
-}
+      /* input area */
 
-input#userMsg {
-  width:80%;
-  border:1px solid #4da6ff;
-  border-radius: 15px;
-  padding: 12px 10px;
-  outline: none;
-  font-size: 16px;
-  letter-spacing: 0.8px;
-}
+      .input-area {
+        justify-content: flex-end;
+        margin: 0;
+      }
 
-.btn{
-  border:none;
-  outline: none;
-  color: #4da6ff;
-  font-size: 38px;
-  transform: translateY(7px);
-  margin: 5px;
-  cursor: pointer;
-}
+      input#userMsg {
+        width:80%;
+        border:1px solid #4da6ff;
+        border-radius: 15px;
+        padding: 12px 10px;
+        outline: none;
+        font-size: 16px;
+        letter-spacing: 0.8px;
+      }
+
+      .btn{
+        border:none;
+        outline: none;
+        color: #4da6ff;
+        font-size: 38px;
+        transform: translateY(7px);
+        margin: 5px;
+        cursor: pointer;
+      }
     </style>
-    <!--<style>
-        @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500;800&display=swap');
-
-        body {
-            font-family: "Raleway";
-        }
-
-        .container {
-            width: 30%;
-            text-align: center;
-            margin: 5% auto;
-            border: 2px solid black;
-            padding: 2%;
-            height: 80%;
-        }
-
-        .heading {
-            text-align: center;
-        }
-
-        #chat-log {
-            text-align: center;
-            height: 50%;
-            border-radius: 5px;
-            border: 2px solid #3FD2C7;
-            overflow-y: scroll;
-            padding: 2%;
-        }
-
-        .message-container {
-          display: block;
-          width: 100%;
-        }
-
-        .message-container .message-bot {
-            padding: 10px;
-            margin: 0;
-            background-color: #00458B;
-            display: block;
-            color: #fff;
-            text-align: left;
-            border-radius: 15px;
-            left: 0;
-            width: 60%;
-        }
-
-        .message-container .message-usr {
-            display: inline-block;
-            padding: 2.5%;
-            background-color: #99DDFF;
-            border-radius: 15px;
-            text-align: right;
-            right: 0;
-            width: 45%;
-            margin: 0 0 0 50%;
-        }
-
-        .input-container {
-            margin-top: 5%;
-            padding: 10px;
-        }
-
-        .input-container input {
-          border-width: 0 0 2px 0;
-        }
-
-        .input-container .submit {
-            padding: 10px;
-            background-color: #3FD2C7;
-            border: none;
-            border-radius: 5px;
-        }
-
-        @media only screen and (max-width: 1000px) {
-          body {
-            font-size: 1.5rem;
-          }
-
-          .container {
-            margin-top: 30%;
-            width: 70%;
-            height: 50%;
-          }
-
-          .input-container input {
-            font-size: 1.25rem;
-            width: 60%;
-            height: 5%; 
-            margin-right: 20px;
-          }
-
-          .input-container .submit {
-            font-size: 1.5rem;
-          }
-        }
-    </style>
-    <div class="container">
-        <div class="heading">
-            <h1>ezPoz Support Chatbot</h1>
-        </div>
-        <div id="chat-log">
-        </div>
-
-        <div class="input-container">
-        <input type="text" class="query">
-            <button class="submit">Submit</button>
-        </span>
-        </div>
-    </div>-->
-
     <div class="container">
       <h2 class="main-heading">CodonLIMS Assistant</h2>
       <div class="chat-box">

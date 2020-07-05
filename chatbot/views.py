@@ -1,6 +1,7 @@
 from .forms import NameForm
 from .df import detect_intent_texts
 import json
+import os
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import render
@@ -9,6 +10,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 sn_id = 'ezPoz'
 pr_id = 'newagent-nkwbgv'
+working_dir = os.getcwd()
+credential_path = working_dir + "\\chatbot\\python\\docs\\NewAgent-c0474c8137a2.json"
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
 
 @xframe_options_exempt
 @require_http_methods(['GET'])
@@ -42,6 +46,7 @@ def bot(request):
     print(input_dict)
     input_text = json.loads(input_dict)['text']
     response = detect_intent_texts(pr_id, sn_id, input_text)
+    print(response)
     return HttpResponse(response, status=200)
 
 

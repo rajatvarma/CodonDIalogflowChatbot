@@ -27,7 +27,6 @@ def delete_intent(project_id, intent_id):
     intents_client = dialogflow.IntentsClient()
     intent_path = intents_client.intent_path(project_id, intent_id)
     intents_client.delete_intent(intent_path)
-
     
 def upload_intents(f, project_id):
     intent_questions = guide.questions_reader(f)
@@ -37,24 +36,23 @@ def upload_intents(f, project_id):
     count = 0
     for k in range(len(intent_questions)):
         parts = intent_questions[k].split(" ")
-        try: 
-            answer = ['%.300s' % intent_answers[k]]
-            '''try:
-                create_intent(project_id, intent_questions[k], parts, answer)
-                count += 1
-            except:
-                print("fail")
-                continue'''
-            create_intent(project_id, intent_questions[k], parts, answer)
-                count += 1
-        except:
-            break
+        answer = ['%.300s' % intent_answers[k]]
+        print(answer)
+        create_intent(project_id, intent_questions[k], parts, answer)
+        count += 1
     return count
 
+def list_intents(project_id):
+    intents_client = dialogflow.IntentsClient()
+
+    parent = intents_client.project_agent_path(project_id)
+
+    intents = intents_client.list_intents(parent)
+
+    response = intents_client.batch_delete_intents(parent, intents)
+
 working_dir = os.getcwd()
-print(working_dir)
-credential_path = working_dir + "\\key\\NewAgent-2fa78f8c2306.json"
-print(credential_path)
+credential_path = working_dir + "\\docs\\NewAgent-c0474c8137a2.json"
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
 pr_id = 'newagent-nkwbgv'
 guides_list = guide.get_guides(os.listdir("docs"))
@@ -64,3 +62,5 @@ for f in guides_list:
     f = "docs/"+f
     print(upload_intents(f, pr_id))
     print("done")
+
+#list_intents(pr_id)

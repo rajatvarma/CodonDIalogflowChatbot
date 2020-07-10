@@ -11,6 +11,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 sn_id = 'ezPoz'
 pr_id = 'newagent-nkwbgv'
 working_dir = os.getcwd()
+credential_path = working_dir + "\\chatbot\\python\\docs\\NewAgent-c0474c8137a2.json"
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path  
 
 @xframe_options_exempt
 @require_http_methods(['GET'])

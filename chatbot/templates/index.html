@@ -92,11 +92,11 @@
       .btn{
         border:none;
         outline: none;
-        color: #4da6ff;
+        color: grey;
         font-size: 38px;
         transform: translateY(7px);
         margin: 5px;
-        cursor: pointer;
+        
       }
     </style>
     <div class="container">
@@ -159,10 +159,16 @@
           }
         }
         else {
-          var inputData = {
-            'text': $input.val()
+          if ($input.val() == "") {
+            console.log("")
           }
-          createRow(inputData.text, 1);
+          else{
+            var inputData = {
+              'text': $input.val()
+            }
+            createRow(inputData.text, 1);
+            $input.val('');
+          }
         }
           
           var dialogflowChatUrl = '{% url "chat" %}';
@@ -175,7 +181,6 @@
 
           $submit.done(function(statement) {
               createRow(statement, 0);
-              $input.val('');
             });
           }
         
@@ -183,6 +188,16 @@
       $sayButton.click(function() {
         submitInput(0);
       });
+
+      $input.focus(function(){
+          $sayButton.css("color", "#4DA6FF");
+          $sayButton.css("cursor", "pointer");
+      })
+
+      $input.focusout(function(){
+        $sayButton.css("color", "grey");
+        $sayButton.css("pointer", "not-allowed");
+      })
 
       $input.keydown(function(event) {
         if (event.keyCode == 13) {
